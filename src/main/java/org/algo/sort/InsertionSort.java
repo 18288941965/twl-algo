@@ -1,5 +1,10 @@
 package org.algo.sort;
 
+import org.algo.loaddata.bean.Bean01;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 插入排序.
  * 时间复杂的 O(n²)
@@ -12,11 +17,22 @@ package org.algo.sort;
 public class InsertionSort {
 
     public static void main(String[] args) {
-        insertionSorting();
+        int[] arr = {1,5,6,9,1,2,7};
+        insertionSort(arr);
+        System.out.println(Arrays.toString(arr));
+
+        // 100000条数据执行时间: 18381  || 17173 || 16612 毫秒
+        List<Bean01> list = LoadCsvFile.loadDataByCsv(100000);
+        long start = System.currentTimeMillis();
+        insertionSort2(list);
+        System.out.printf("执行时间: %d", System.currentTimeMillis() - start);
+
+        /*list.forEach(item -> {
+            System.out.println(item.toString());
+        });*/
     }
 
-    public static void insertionSorting () {
-        int[] arr = {1,5,6,9,1,2,7};
+    public static void insertionSort (int[] arr) {
         for (int i = 1; i < arr.length; ++i) {
             int value = arr[i];
             int j = i - 1;
@@ -29,6 +45,21 @@ public class InsertionSort {
                 }
             }
             arr[j+1] = value; // 插入数据
+        }
+    }
+
+    public static void insertionSort2(List<Bean01> list) {
+        for (int i = 1; i < list.size(); i++) {
+            Bean01 bean01 = list.get(i);
+             int j = i - 1;
+            for (; j >= 0; j--) {
+                if (list.get(j).getAmount() > bean01.getAmount()) {
+                    list.set(j + 1, list.get(j));
+                } else {
+                    break;
+                }
+            }
+            list.set(j + 1, bean01);
         }
     }
 }

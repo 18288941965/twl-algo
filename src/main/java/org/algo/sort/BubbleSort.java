@@ -1,5 +1,10 @@
 package org.algo.sort;
 
+import org.algo.loaddata.bean.Bean01;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 冒泡排序.
  * 时间复杂的 O(n²)
@@ -10,10 +15,25 @@ package org.algo.sort;
  * [代码提示：第一个for为要走几趟才能完成排序，第二个for为本次排序需要遍历多少次]
  */
 public class BubbleSort {
-    public static void bubbleSort () {
+
+    public static void main(String[] args) {
         int[] arr = {1,5,6,9,1,2,7};
-        // 写法一
+        bubbleSort(arr);
+        System.out.println(Arrays.toString(arr));
+
+        // 100000条数据执行时间: 69555 || 68078 || 65446毫秒
+        List<Bean01> list = LoadCsvFile.loadDataByCsv(100000);
+        long start = System.currentTimeMillis();
+        bubbleSort3(list);
+        System.out.printf("执行时间: %d", System.currentTimeMillis() - start);
+
         /*
+        list.forEach(item -> {
+            System.out.println(item.toString());
+        });*/
+    }
+
+    public static void bubbleSort (int[] arr) {
         for (int i = 1; i < arr.length; i++) {
             boolean flag = false;
             for (int j = 0; j < arr.length - i; j++) {
@@ -26,8 +46,9 @@ public class BubbleSort {
             }
             if (!flag) break;
         }
-        */
-        // 写法二
+    }
+
+    public static void bubbleSort2(int[] arr) {
         for (int i = arr.length - 1; i > 0; i--) {
             boolean flag = false;
             for (int j = 0; j < i; j++) {
@@ -42,7 +63,18 @@ public class BubbleSort {
         }
     }
 
-    public static void main(String[] args) {
-        bubbleSort();
+    public static void bubbleSort3(List<Bean01> list) {
+        for (int i = 1; i < list.size(); i++) {
+            boolean flag = false;
+            for (int j = 0; j < list.size() - i; j++) {
+                if (list.get(j).getAmount() > list.get(j + 1).getAmount()) {
+                    Bean01 bean01 = list.get(j + 1);
+                    list.set(j + 1, list.get(j));
+                    list.set(j, bean01);
+                    flag = true;
+                }
+            }
+            if (!flag) break;
+        }
     }
 }

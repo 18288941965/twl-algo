@@ -1,5 +1,7 @@
 package org.algo.sort;
 
+import java.util.Arrays;
+
 /**
  * 快速排序.
  * 时间复杂的 O(nlogn).
@@ -17,17 +19,11 @@ package org.algo.sort;
 public class QuickSort {
 
     public static void main(String[] args) {
-        quickSort();
-    }
-
-    public static void quickSort() {
         int[] arr = {1,5,6,9,1,2,7};
         quickSortInternally(arr, 0, arr.length-1);
-        // 输出结果
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + "-");
-        }
+        System.out.println(Arrays.toString(arr));
     }
+
     // 快速排序递归函数，p,r为下标
     private static void quickSortInternally(int[] a, int p, int r) {
         if (p >= r) return;
@@ -35,6 +31,7 @@ public class QuickSort {
         quickSortInternally(a, p, q-1);
         quickSortInternally(a, q+1, r);
     }
+
     private static int partition(int[] a, int p, int r) {
         int pivot = a[r];
         int i = p;

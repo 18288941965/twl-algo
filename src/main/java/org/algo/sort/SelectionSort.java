@@ -1,5 +1,10 @@
 package org.algo.sort;
 
+import org.algo.loaddata.bean.Bean01;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 选择排序 .
  *  时间复杂的 O(n²).
@@ -12,11 +17,23 @@ package org.algo.sort;
 public class SelectionSort {
 
     public static void main(String[] args) {
-        selectionSort();
+        int[] arr = {1,5,6,9,1,2,7};
+        selectionSort(arr);
+        System.out.println(Arrays.toString(arr));
+
+        // 100000条数据执行时间: 116377 || 149713 毫秒
+        List<Bean01> list = LoadCsvFile.loadDataByCsv(100000);
+        long start = System.currentTimeMillis();
+        selectionSort2(list);
+        System.out.printf("执行时间: %d", System.currentTimeMillis() - start);
+
+        /*
+        list.forEach(item -> {
+            System.out.println(item.toString());
+        });*/
     }
 
-    public static void selectionSort () {
-        int[] arr = {1,5,6,9,1,2,7};
+    public static void selectionSort (int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < arr.length; j++) {
@@ -30,10 +47,17 @@ public class SelectionSort {
             arr[i] = arr[minIndex];
             arr[minIndex] = tem;
         }
-        // 输出结果
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + "-");
-        }
     }
 
+    public static void selectionSort2(List<Bean01> list) {
+        for (int i = 0; i < list.size(); i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < list.size(); j++) {
+                minIndex = list.get(j).getAmount() < list.get(minIndex).getAmount() ? j : minIndex;
+            }
+            Bean01 bean01 = list.get(i);
+            list.set(i, list.get(minIndex));
+            list.set(minIndex, bean01);
+        }
+    }
 }
